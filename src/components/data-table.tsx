@@ -89,6 +89,7 @@ export const schema = z.object({
   category: z.string(),
   date: z.string(),
   effectiveValue: z.number(),
+  attachment: z.string().optional(),
 });
 
 function DragHandle({ id }: { id: number }) {
@@ -728,6 +729,7 @@ function TableCellViewer({
                 tipo: convertType(item.type),
                 categoria: item.category,
                 data: parseDate(item.date),
+                attachment: item.attachment,
               },
             })
           );
@@ -783,6 +785,7 @@ function TableCellActions({
                     tipo: convertType(item.type),
                     categoria: item.category,
                     data: parseDate(item.date),
+                    attachment: item.attachment,
                   },
                 })
               );

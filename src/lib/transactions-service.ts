@@ -6,6 +6,7 @@ export interface Transaction {
   category: string;
   date: string;
   effectiveValue: number;
+  attachment?: string;
 }
 
 const STORAGE_KEY = "valoro-transactions";
@@ -74,6 +75,7 @@ export function createTransaction(data: {
   tipo: string;
   categoria: string;
   data: Date | undefined;
+  attachment?: string;
 }): Transaction | null {
   const value = parseFloat(data.valor.replace(",", "."));
   if (isNaN(value) || value <= 0) {
@@ -91,6 +93,7 @@ export function createTransaction(data: {
     category: data.categoria,
     date: formatDate(data.data),
     effectiveValue: calculateEffectiveValue(value, type),
+    attachment: data.attachment,
   };
 
   transactions.push(newTransaction);
@@ -106,6 +109,7 @@ export function updateTransaction(
     tipo: string;
     categoria: string;
     data: Date | undefined;
+    attachment?: string;
   }
 ): Transaction | null {
   const value = parseFloat(data.valor.replace(",", "."));
@@ -131,6 +135,7 @@ export function updateTransaction(
     category: data.categoria,
     date: formatDate(data.data),
     effectiveValue: calculateEffectiveValue(value, type),
+    attachment: data.attachment,
   };
 
   transactions[index] = updatedTransaction;

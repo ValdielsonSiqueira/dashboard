@@ -135,6 +135,7 @@ function DashboardContent() {
         tipo: convertType(transaction.type),
         categoria: transaction.category,
         data: parseDate(transaction.date),
+        attachment: transaction.attachment,
       };
 
       window.dispatchEvent(

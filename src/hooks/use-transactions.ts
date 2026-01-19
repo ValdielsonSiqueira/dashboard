@@ -42,6 +42,7 @@ export function useTransactions() {
       tipo: string;
       categoria: string;
       data: Date | undefined;
+      attachment?: string;
     }) => {
       const newTransaction = createTransaction(data);
       if (newTransaction) {
@@ -63,6 +64,7 @@ export function useTransactions() {
         tipo: string;
         categoria: string;
         data: Date | undefined;
+        attachment?: string;
       }
     ) => {
       const updatedTransaction = updateTransaction(id, data);
