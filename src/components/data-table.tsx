@@ -383,8 +383,7 @@ export function DataTable({
 
   const columns = useColumns(handleEdit, handleDelete);
   const [data, setData] = React.useState(() => initialData);
-  const [isNewTransactionDrawerOpen, setIsNewTransactionDrawerOpen] =
-    React.useState(false);
+
   const [rowSelection, setRowSelection] = React.useState({});
   const [columnVisibility, setColumnVisibility] =
     React.useState<VisibilityState>({});
@@ -511,22 +510,15 @@ export function DataTable({
               variant="outline"
               size="sm"
               className="items-center gap-2"
-              onClick={() => setIsNewTransactionDrawerOpen(true)}
+              onClick={() =>
+                window.dispatchEvent(
+                  new CustomEvent("@FIAP/OPEN_TRANSACTION_DRAWER")
+                )
+              }
             >
               <IconPlus className="flex-shrink-0" />
               <span className="hidden lg:!block">Nova Transação</span>
             </Button>
-            <TransactionDrawer
-              open={isNewTransactionDrawerOpen}
-              onOpenChange={setIsNewTransactionDrawerOpen}
-              title="Nova Transação"
-              onConcluir={(data) => {
-                if (onAddTransaction) {
-                  onAddTransaction(data);
-                }
-                setIsNewTransactionDrawerOpen(false);
-              }}
-            />
           </div>
         </div>
         <TabsContent
@@ -778,7 +770,7 @@ function TableCellActions({
 
   return (
     <>
-      <DropdownMenu>
+      <DropdownMenu modal={false}>
         <DropdownMenuTrigger asChild>
           <Button
             variant="ghost"
@@ -790,7 +782,7 @@ function TableCellActions({
             <span className="sr-only">Open menu</span>
           </Button>
         </DropdownMenuTrigger>
-        <DropdownMenuContent align="end" className="w-32">
+        <DropdownMenuContent align="end" className="w-32 z-[99999]">
           <DropdownMenuItem
             onClick={() => {
               if (isVisible) {

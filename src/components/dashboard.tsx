@@ -18,7 +18,7 @@ import {
 import { useTransactions } from "../hooks/use-transactions";
 import { Transaction } from "../lib/transactions-service";
 import { Skeleton, Timeline, SidebarInset, SidebarProvider } from "@valoro/ui";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 function parseDate(dateString: string): Date | undefined {
   const parts = dateString.split("/");
@@ -62,6 +62,27 @@ function DashboardContent() {
     removeTransaction,
   } = useTransactions();
   const { isVisible } = useVisibility();
+
+  useEffect(() => {
+    const handleTransactionCreated = (event: Event) => {
+      const customEvent = event as CustomEvent;
+      if (customEvent.detail) {
+        addTransaction(customEvent.detail);
+      }
+    };
+
+    window.addEventListener(
+      "@FIAP/TRANSACTION_CREATED",
+      handleTransactionCreated
+    );
+
+    return () => {
+      window.removeEventListener(
+        "@FIAP/TRANSACTION_CREATED",
+        handleTransactionCreated
+      );
+    };
+  }, [addTransaction]);
   const [isEditDrawerOpen, setIsEditDrawerOpen] = useState(false);
   const [editingTransaction, setEditingTransaction] =
     useState<Transaction | null>(null);
