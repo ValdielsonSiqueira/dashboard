@@ -23,6 +23,7 @@ import {
   IconChartPie,
   IconChartRadar,
   IconChartDonut,
+  IconCalendar,
 } from "@tabler/icons-react";
 
 import { useIsMobile } from "../hooks/use-mobile";
@@ -436,7 +437,7 @@ export function ChartAreaInteractive({ data }: { data?: TransactionData[] }) {
         <CardAction className="flex gap-2">
           <Select value={chartType} onValueChange={setChartType}>
             <SelectTrigger
-              className="w-[120px] rounded-lg"
+              className="w-auto sm:w-[120px] rounded-lg [&_.chart-type-text]:hidden sm:[&_.chart-type-text]:inline"
               aria-label="Select chart type"
             >
               <SelectValue placeholder="Tipo" />
@@ -445,31 +446,31 @@ export function ChartAreaInteractive({ data }: { data?: TransactionData[] }) {
               <SelectItem value="area" className="rounded-lg">
                 <div className="flex items-center gap-2">
                   <IconChartArea className="size-4" />
-                  <span>Area</span>
+                  <span className="chart-type-text">Area</span>
                 </div>
               </SelectItem>
               <SelectItem value="bar" className="rounded-lg">
                 <div className="flex items-center gap-2">
                   <IconChartBar className="size-4" />
-                  <span>Bar</span>
+                  <span className="chart-type-text">Bar</span>
                 </div>
               </SelectItem>
               <SelectItem value="pie" className="rounded-lg">
                 <div className="flex items-center gap-2">
                   <IconChartPie className="size-4" />
-                  <span>Pie</span>
+                  <span className="chart-type-text">Pie</span>
                 </div>
               </SelectItem>
               <SelectItem value="radar" className="rounded-lg">
                 <div className="flex items-center gap-2">
                   <IconChartRadar className="size-4" />
-                  <span>Radar</span>
+                  <span className="chart-type-text">Radar</span>
                 </div>
               </SelectItem>
               <SelectItem value="radial" className="rounded-lg">
                 <div className="flex items-center gap-2">
                   <IconChartDonut className="size-4" />
-                  <span>Radial</span>
+                  <span className="chart-type-text">Radial</span>
                 </div>
               </SelectItem>
             </SelectContent>
@@ -488,7 +489,7 @@ export function ChartAreaInteractive({ data }: { data?: TransactionData[] }) {
           </ToggleGroup>
           <Select value={timeRange} onValueChange={setTimeRange}>
             <SelectTrigger
-              className="flex w-40 **:data-[slot=select-value]:block **:data-[slot=select-value]:truncate @[767px]/card:hidden"
+              className="flex w-auto sm:w-[160px] rounded-lg **:data-[slot=select-value]:block **:data-[slot=select-value]:truncate @[767px]/card:hidden [&_.time-range-text]:hidden sm:[&_.time-range-text]:inline"
               size="sm"
               aria-label="Select a value"
             >
@@ -496,13 +497,22 @@ export function ChartAreaInteractive({ data }: { data?: TransactionData[] }) {
             </SelectTrigger>
             <SelectContent className="rounded-xl">
               <SelectItem value="90d" className="rounded-lg">
-                Último trimestre
+                <div className="flex items-center gap-2">
+                  <IconCalendar className="size-4" />
+                  <span className="time-range-text">Último trimestre</span>
+                </div>
               </SelectItem>
               <SelectItem value="30d" className="rounded-lg">
-                Últimos 30 dias
+                <div className="flex items-center gap-2">
+                  <IconCalendar className="size-4" />
+                  <span className="time-range-text">Últimos 30 dias</span>
+                </div>
               </SelectItem>
               <SelectItem value="7d" className="rounded-lg">
-                Últimos 7 dias
+                <div className="flex items-center gap-2">
+                  <IconCalendar className="size-4" />
+                  <span className="time-range-text">Últimos 7 dias</span>
+                </div>
               </SelectItem>
             </SelectContent>
           </Select>

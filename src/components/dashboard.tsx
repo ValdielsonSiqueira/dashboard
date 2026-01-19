@@ -9,6 +9,7 @@ import {
 } from "./dashboard-skeletons";
 import { SectionCards } from "./section-cards";
 import { SiteHeader } from "./site-header";
+import { PersonalizationWidgets } from "./personalization-widgets";
 import { DeleteTransactionDialog } from "./delete-transaction-dialog";
 import {
   VisibilityProvider,
@@ -207,6 +208,9 @@ function DashboardContent() {
               <div className="@container/main flex flex-1 flex-col gap-2">
                 <div className="flex flex-col gap-4 py-4 md:gap-6 md:py-6">
                   <SectionCards data={transactions} />
+                  <div className="px-4 lg:px-6">
+                    <PersonalizationWidgets transactions={transactions} />
+                  </div>
                   <div id="Movimentações" className="px-4 lg:px-6">
                     <ChartAreaInteractive data={transactions} />
                   </div>
