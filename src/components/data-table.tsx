@@ -78,8 +78,7 @@ import {
 } from "@valoro/ui";
 
 import { DeleteTransactionDialog } from "./delete-transaction-dialog";
-import { getCategoryColor } from "../lib/category-colors";
-import { loadCustomCategoryColors } from "../lib/custom-categories";
+import { getCategoryColor, loadCustomCategoryColors } from "@FIAP/util";
 
 export const schema = z.object({
   id: z.number(),

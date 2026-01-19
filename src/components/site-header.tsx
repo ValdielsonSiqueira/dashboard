@@ -7,7 +7,7 @@ import {
   IconEye,
   IconEyeOff,
 } from "@tabler/icons-react";
-import { getUserProfile, UserProfile } from "../lib/user-service";
+import { getUserProfile, UserProfile } from "@FIAP/util";
 
 type TransactionData = {
   id: number;

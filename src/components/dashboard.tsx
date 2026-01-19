@@ -16,7 +16,7 @@ import {
   useVisibility,
 } from "../contexts/visibility-context";
 import { useTransactions } from "../hooks/use-transactions";
-import { Transaction } from "../lib/transactions-service";
+import { Transaction } from "@FIAP/util";
 import { Skeleton, Timeline, SidebarInset, SidebarProvider } from "@valoro/ui";
 import { useState, useEffect } from "react";
 

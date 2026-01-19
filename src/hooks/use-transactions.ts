@@ -9,7 +9,7 @@ import {
   updateTransaction,
   deleteTransaction,
   deleteTransactions,
-} from "../lib/transactions-service";
+} from "@FIAP/util";
 
 export function useTransactions() {
   const [transactions, setTransactions] = useState<Transaction[]>([]);

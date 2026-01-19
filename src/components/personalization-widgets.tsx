@@ -27,16 +27,16 @@ import {
   IconAlertTriangle,
   IconSettings,
 } from "@tabler/icons-react";
-import { Transaction } from "../lib/transactions-service";
 
 import {
+  Transaction,
   getSavingsGoals,
   saveSavingsGoals,
   getSpendingAlerts,
   saveSpendingAlerts,
   SavingsGoal,
   SpendingAlert,
-} from "../lib/widgets-service";
+} from "@FIAP/util";
 
 interface PersonalizationWidgetsProps {
   transactions: Transaction[];
