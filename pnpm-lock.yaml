@@ -1800,7 +1800,7 @@ packages:
     resolution: {integrity: sha512-sbtvk8wDN+JvEdabmZExoW/HNr1cB7D/j4LT08rMiuikfA7m/JNJg7ATQcgzs34zHnoScDkY0ZRSl29Fkmk36g==}
 
   '@valoro/ui@file:../../Valoro/packages/ui/valoro-ui-0.0.0.tgz':
-    resolution: {integrity: sha512-tLEkaotmSpveV1B0rIZdYFnm9NBeEs2/ghqEieXxq9LHwhJlfhO9AAUcgEDz/DnzAl4rYtVeY/ZfGDGHQZw6zw==, tarball: file:../../Valoro/packages/ui/valoro-ui-0.0.0.tgz}
+    resolution: {integrity: sha512-QKxKKa07MyUJK/N3FkWvrNAi7OnYpzB9k6wv+pY74vNGGnDFo+m/cpGrVvuqCRU9poxofBCM/puYuDlTssJMKw==, tarball: file:../../Valoro/packages/ui/valoro-ui-0.0.0.tgz}
     version: 0.0.0
     peerDependencies:
       react: ^18.0.0 || ^19.0.0
