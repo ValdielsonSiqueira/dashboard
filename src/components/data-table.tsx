@@ -76,7 +76,7 @@ import {
   Tabs,
   TabsContent,
 } from "@valoro/ui";
-import { TransactionDrawer } from "./transaction-drawer";
+
 import { DeleteTransactionDialog } from "./delete-transaction-dialog";
 import { getCategoryColor } from "../lib/category-colors";
 import { loadCustomCategoryColors } from "../lib/custom-categories";
@@ -713,39 +713,30 @@ function TableCellViewer({
   }) => void;
   isVisible?: boolean;
 }) {
-  const [isDrawerOpen, setIsDrawerOpen] = React.useState(false);
-
   return (
-    <>
-      <Button
-        variant="link"
-        className="text-foreground w-fit px-0 text-left"
-        onClick={() => {
-          if (isVisible) {
-            setIsDrawerOpen(true);
-          }
-        }}
-        disabled={!isVisible}
-      >
-        {item.transaction}
-      </Button>
-      <TransactionDrawer
-        open={isDrawerOpen}
-        onOpenChange={setIsDrawerOpen}
-        title="Editar Transação"
-        onConcluir={(data) => {
-          onEdit(data);
-          setIsDrawerOpen(false);
-        }}
-        initialData={{
-          nome: item.transaction,
-          valor: item.value.toString(),
-          tipo: convertType(item.type),
-          categoria: item.category,
-          data: parseDate(item.date),
-        }}
-      />
-    </>
+    <Button
+      variant="link"
+      className="text-foreground w-fit px-0 text-left"
+      onClick={() => {
+        if (isVisible) {
+          window.dispatchEvent(
+            new CustomEvent("@FIAP/OPEN_TRANSACTION_DRAWER", {
+              detail: {
+                id: item.id,
+                nome: item.transaction,
+                valor: item.value.toString(),
+                tipo: convertType(item.type),
+                categoria: item.category,
+                data: parseDate(item.date),
+              },
+            })
+          );
+        }
+      }}
+      disabled={!isVisible}
+    >
+      {item.transaction}
+    </Button>
   );
 }
 
@@ -766,62 +757,53 @@ function TableCellActions({
   onDelete: () => void;
   isVisible?: boolean;
 }) {
-  const [isDrawerOpen, setIsDrawerOpen] = React.useState(false);
-
   return (
-    <>
-      <DropdownMenu modal={false}>
-        <DropdownMenuTrigger asChild>
-          <Button
-            variant="ghost"
-            className="data-[state=open]:bg-muted text-muted-foreground flex size-8"
-            size="icon"
-            disabled={!isVisible}
-          >
-            <IconDotsVertical />
-            <span className="sr-only">Open menu</span>
-          </Button>
-        </DropdownMenuTrigger>
-        <DropdownMenuContent align="end" className="w-32 z-[99999]">
-          <DropdownMenuItem
-            onClick={() => {
-              if (isVisible) {
-                setIsDrawerOpen(true);
-              }
-            }}
-            disabled={!isVisible}
-          >
-            Editar
-          </DropdownMenuItem>
-          <DropdownMenuItem
-            variant="destructive"
-            onClick={() => {
-              if (isVisible) {
-                onDelete();
-              }
-            }}
-            disabled={!isVisible}
-          >
-            Deletar
-          </DropdownMenuItem>
-        </DropdownMenuContent>
-      </DropdownMenu>
-      <TransactionDrawer
-        open={isDrawerOpen}
-        onOpenChange={setIsDrawerOpen}
-        title="Editar Transação"
-        onConcluir={(data) => {
-          onEdit(data);
-          setIsDrawerOpen(false);
-        }}
-        initialData={{
-          nome: item.transaction,
-          valor: item.value.toString(),
-          tipo: convertType(item.type),
-          categoria: item.category,
-          data: parseDate(item.date),
-        }}
-      />
-    </>
+    <DropdownMenu modal={false}>
+      <DropdownMenuTrigger asChild>
+        <Button
+          variant="ghost"
+          className="data-[state=open]:bg-muted text-muted-foreground flex size-8"
+          size="icon"
+          disabled={!isVisible}
+        >
+          <IconDotsVertical />
+          <span className="sr-only">Open menu</span>
+        </Button>
+      </DropdownMenuTrigger>
+      <DropdownMenuContent align="end" className="w-32 z-[99999]">
+        <DropdownMenuItem
+          onClick={() => {
+            if (isVisible) {
+              window.dispatchEvent(
+                new CustomEvent("@FIAP/OPEN_TRANSACTION_DRAWER", {
+                  detail: {
+                    id: item.id,
+                    nome: item.transaction,
+                    valor: item.value.toString(),
+                    tipo: convertType(item.type),
+                    categoria: item.category,
+                    data: parseDate(item.date),
+                  },
+                })
+              );
+            }
+          }}
+          disabled={!isVisible}
+        >
+          Editar
+        </DropdownMenuItem>
+        <DropdownMenuItem
+          variant="destructive"
+          onClick={() => {
+            if (isVisible) {
+              onDelete();
+            }
+          }}
+          disabled={!isVisible}
+        >
+          Excluir
+        </DropdownMenuItem>
+      </DropdownMenuContent>
+    </DropdownMenu>
   );
 }

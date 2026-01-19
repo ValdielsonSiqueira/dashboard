@@ -9,7 +9,6 @@ import {
 } from "./dashboard-skeletons";
 import { SectionCards } from "./section-cards";
 import { SiteHeader } from "./site-header";
-import { TransactionDrawer } from "./transaction-drawer";
 import { DeleteTransactionDialog } from "./delete-transaction-dialog";
 import {
   VisibilityProvider,
@@ -71,9 +70,24 @@ function DashboardContent() {
       }
     };
 
+    const handleTransactionUpdated = (event: Event) => {
+      const customEvent = event as CustomEvent;
+      if (customEvent.detail && customEvent.detail.id) {
+        // The drawer returns { id, nome, valor, ... } but editTransaction expects (id, data)
+        // We need to pass the data part.
+        // Note: The drawer returns standard struct { nome, valor, ... }
+        // editTransaction expects { nome, valor, ... }
+        editTransaction(customEvent.detail.id, customEvent.detail);
+      }
+    };
+
     window.addEventListener(
       "@FIAP/TRANSACTION_CREATED",
       handleTransactionCreated
+    );
+    window.addEventListener(
+      "@FIAP/TRANSACTION_UPDATED",
+      handleTransactionUpdated
     );
 
     return () => {
@@ -81,11 +95,13 @@ function DashboardContent() {
         "@FIAP/TRANSACTION_CREATED",
         handleTransactionCreated
       );
+      window.removeEventListener(
+        "@FIAP/TRANSACTION_UPDATED",
+        handleTransactionUpdated
+      );
     };
-  }, [addTransaction]);
-  const [isEditDrawerOpen, setIsEditDrawerOpen] = useState(false);
-  const [editingTransaction, setEditingTransaction] =
-    useState<Transaction | null>(null);
+  }, [addTransaction, editTransaction]);
+
   const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
   const [transactionToDelete, setTransactionToDelete] = useState<{
     id?: string | number;
@@ -95,6 +111,10 @@ function DashboardContent() {
   } | null>(null);
 
   const timelineTransactions = transactions.map(convertTransactionToTimeline);
+
+  const convertType = (type: "Receita" | "Despesa"): string => {
+    return type.toLowerCase();
+  };
 
   const handleTimelineEdit = (timelineTransaction: {
     id?: string | number;
@@ -106,8 +126,21 @@ function DashboardContent() {
       (t) => t.id === timelineTransaction.id
     );
     if (transaction) {
-      setEditingTransaction(transaction);
-      setIsEditDrawerOpen(true);
+      // Dispatch event to open the shared drawer
+      const initialData = {
+        id: transaction.id, // Important: pass ID so the drawer knows it is editing
+        nome: transaction.transaction,
+        valor: transaction.value.toString(),
+        tipo: convertType(transaction.type),
+        categoria: transaction.category,
+        data: parseDate(transaction.date),
+      };
+
+      window.dispatchEvent(
+        new CustomEvent("@FIAP/OPEN_TRANSACTION_DRAWER", {
+          detail: initialData,
+        })
+      );
     }
   };
 
@@ -126,24 +159,6 @@ function DashboardContent() {
       removeTransaction(Number(transactionToDelete.id));
     }
     setTransactionToDelete(null);
-  };
-
-  const handleEditConcluir = (data: {
-    nome: string;
-    valor: string;
-    tipo: string;
-    categoria: string;
-    data: Date | undefined;
-  }) => {
-    if (editingTransaction) {
-      editTransaction(editingTransaction.id, data);
-      setIsEditDrawerOpen(false);
-      setEditingTransaction(null);
-    }
-  };
-
-  const convertType = (type: "Receita" | "Despesa"): string => {
-    return type.toLowerCase();
   };
 
   const headerSkeleton = (
@@ -216,21 +231,6 @@ function DashboardContent() {
                 </div>
               </div>
             </div>
-            {editingTransaction && (
-              <TransactionDrawer
-                open={isEditDrawerOpen}
-                onOpenChange={setIsEditDrawerOpen}
-                title="Editar Transação"
-                onConcluir={handleEditConcluir}
-                initialData={{
-                  nome: editingTransaction.transaction,
-                  valor: editingTransaction.value.toString(),
-                  tipo: convertType(editingTransaction.type),
-                  categoria: editingTransaction.category,
-                  data: parseDate(editingTransaction.date),
-                }}
-              />
-            )}
             <DeleteTransactionDialog
               open={deleteDialogOpen}
               onOpenChange={setDeleteDialogOpen}
