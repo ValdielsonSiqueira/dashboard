@@ -4,11 +4,9 @@
     "jsx": "react-jsx",
     "declarationDir": "dist",
     "baseUrl": ".",
-    "paths": {
-      "@FIAP/util": ["../util/src/FIAP-util.ts"]
-    }
+    "paths": {}
   },
-  "files": ["src/FIAP-dasboard.tsx"],
+  "files": ["src/FIAP-dashboard.tsx"],
   "include": ["src/**/*"],
   "exclude": ["src/**/*.test*"]
 }

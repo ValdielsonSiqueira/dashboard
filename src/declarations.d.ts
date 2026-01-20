@@ -1,39 +1,90 @@
-declare module "*.html" {
-  const rawHtmlFile: string;
-  export = rawHtmlFile;
-}
+declare module "@FIAP/util" {
+  // transactions-service
+  export interface Transaction {
+    id: number;
+    transaction: string;
+    value: number;
+    type: "Receita" | "Despesa";
+    category: string;
+    date: string;
+    effectiveValue: number;
+    attachment?: string;
+  }
 
-declare module "*.bmp" {
-  const src: string;
-  export default src;
-}
+  export function initializeStorage(defaultData: Transaction[]): void;
+  export function getTransactions(): Transaction[];
+  export function createTransaction(data: {
+    nome: string;
+    valor: string;
+    tipo: string;
+    categoria: string;
+    data: Date | undefined;
+    attachment?: string;
+  }): Transaction | null;
+  export function updateTransaction(
+    id: number,
+    data: {
+      nome: string;
+      valor: string;
+      tipo: string;
+      categoria: string;
+      data: Date | undefined;
+      attachment?: string;
+    }
+  ): Transaction | null;
+  export function deleteTransaction(id: number): boolean;
+  export function deleteTransactions(ids: number[]): boolean;
 
-declare module "*.gif" {
-  const src: string;
-  export default src;
-}
+  // widgets-service
+  export interface SavingsGoal {
+    id: string;
+    name: string;
+    targetAmount: number;
+    currentAmount: number;
+  }
+  export interface SpendingAlert {
+    id: string;
+    category: string;
+    limitAmount: number;
+    enabled: boolean;
+  }
+  export function getSavingsGoals(): SavingsGoal[];
+  export function saveSavingsGoals(goals: SavingsGoal[]): void;
+  export function getSpendingAlerts(): SpendingAlert[];
+  export function saveSpendingAlerts(alerts: SpendingAlert[]): void;
 
-declare module "*.jpg" {
-  const src: string;
-  export default src;
-}
+  // user-service
+  export interface UserProfile {
+    name: string;
+    email: string;
+    avatar: string;
+  }
+  export function getUserProfile(): UserProfile;
+  export function saveUserProfile(user: UserProfile): void;
 
-declare module "*.jpeg" {
-  const src: string;
-  export default src;
-}
+  // category-colors
+  export function getCategoryColor(category: string): string;
+  export function isCategoryOutline(category: string): boolean;
+  export const CATEGORY_COLORS: Record<string, string>;
 
-declare module "*.png" {
-  const src: string;
-  export default src;
-}
+  // custom-categories
+  export interface CustomCategory {
+    value: string;
+    label: string;
+    color?: string;
+  }
+  export function loadCustomCategories(): CustomCategory[];
+  export function saveCustomCategories(categories: CustomCategory[]): void;
+  export function addCustomCategory(category: CustomCategory): void;
+  export function loadCustomCategoryColors(): Record<string, string>;
+  export function saveCustomCategoryColor(
+    categoryLabel: string,
+    color: string
+  ): void;
+  export function normalizeCategoryValue(label: string): string;
 
-declare module "*.webp" {
-  const src: string;
-  export default src;
-}
-
-declare module "*.svg" {
-  const src: string;
-  export default src;
+  // utils
+  // Use any or define ClassValue locally to avoid top-level import
+  type ClassValue = any;
+  export function cn(...inputs: ClassValue[]): string;
 }
