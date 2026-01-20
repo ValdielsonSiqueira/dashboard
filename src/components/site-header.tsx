@@ -32,8 +32,8 @@ function calculateBalance(data: TransactionData[]): number {
 
 export function SiteHeader({ data }: { data?: TransactionData[] }) {
   const { isVisible, toggleVisibility } = useVisibility();
+  const [user, setUser] = useState<UserProfile | null>(() => getUserProfile());
   const balance = data ? calculateBalance(data) : 0;
-  const [user, setUser] = useState<UserProfile>(() => getUserProfile());
 
   useEffect(() => {
     setUser(getUserProfile());
@@ -67,11 +67,13 @@ export function SiteHeader({ data }: { data?: TransactionData[] }) {
           orientation="vertical"
           className="mx-2 data-[orientation=vertical]:h-4"
         />
-        <h1 className="text-base hidden lg:!flex items-center gap-2 font-medium">
-          Olá,
-          <span className="text-primary">{user.name}</span>
-          <IconMoodDollar className="!size-5 text-primary" />
-        </h1>
+        {user && (
+          <h1 className="text-base hidden lg:!flex items-center gap-2 font-medium">
+            Olá,
+            <span className="text-primary">{user.name}</span>
+            <IconMoodDollar className="!size-5 text-primary" />
+          </h1>
+        )}
         <div className="ml-auto flex items-center gap-2">
           <div className="flex items-center gap-2 text-sm">
             <span className="text-muted-foreground text-lg">Saldo:</span>

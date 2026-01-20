@@ -26,7 +26,7 @@ module.exports = (webpackConfigEnv, argv) => {
       },
     },
     output: {
-      publicPath: "//localhost:8083/",
+      publicPath: "http://localhost:8083/",
     },
     externals: ["react", "react-dom", "react-dom/client", "@FIAP/util"],
     module: {
